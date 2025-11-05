@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 load_dotenv()
 FORM_URL = os.getenv('FORM_URL')
 
-with open('responses.json') as f:
+with open('responses-2.json') as f:
     responses = json.load(f)
 
 with sync_playwright() as p:
@@ -15,22 +15,22 @@ with sync_playwright() as p:
     page.goto(FORM_URL)
 
     # Start from index 1, since 0 was already submitted
-    for i in range(2, len(responses)):
+    for i in range(27, len(responses)):
         response = responses[i]
         print(f"Filling response {i+1}")
             
         # Page 1: Demographics
         page.locator(f'[data-value="{response["gender"]}"]').click()
         page.locator(f'[data-value="{response["age"]}"]').click()
-        if response["ethnicity"] == "Other":
+        if response["ethnicity"] != "Chinese":
             page.locator('[data-params*="ethnicity"] [data-value="__other_option__"]').click()
-            page.locator('[data-params*="ethnicity"] [aria-label*="其他回應"]').fill("Other")
+            page.locator('[data-params*="ethnicity"] [aria-label*="其他回應"]').fill(f"{response["ethnicity"]}")
         else:
             page.locator(f'[data-params*="ethnicity"] [data-value="{response["ethnicity"]}"]').click()
         
-        if response["nationality"] == "Other":
+        if response["nationality"] != "Malaysian":
             page.locator('[data-params*="nationality"] [data-value="__other_option__"]').click()
-            page.locator('[data-params*="nationality"] [aria-label*="其他回應"]').fill("Other")
+            page.locator('[data-params*="nationality"] [aria-label*="其他回應"]').fill(response["nationality"])
         else:
             page.locator(f'[data-params*="nationality"] [data-value="{response["nationality"]}"]').click()
         page.locator(f'[data-value="{response["year"]}"]').click()
@@ -106,11 +106,13 @@ with sync_playwright() as p:
         page.locator(f'div[aria-label*="I am aware of the need to practice cyber security behavior to reduce the risks of cyber threats online."] [data-value="{response["pact2"]}"]').click()
         page.locator(f'div[aria-label*="I am aware of cyber threats and their risks online."] [data-value="{response["pact3"]}"]').click()
         page.locator(f'div[aria-label*="I am concerned about cyber threats risks and its consequences for my security online."] [data-value="{response["pact4"]}"]').click()
+        page.wait_for_timeout(500)  # wait for half a second
         page.click('text=繼續')
         
         # Page 10: Suggestions
-        # page.locator('textarea[aria-label*="suggestions"]').fill(response["suggestions"])
-        # page.click('text=Submit')
+        page.locator('textarea[aria-label*="您的回答"]').fill(response["suggestions"])
+        page.wait_for_timeout(500)  # wait for half a second
+        page.click('text=提交')
         
         # Wait for submission
         page.wait_for_url('**/formResponse')

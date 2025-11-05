@@ -3,7 +3,7 @@ import numpy as np
 from collections import Counter
 
 # Read the CSV file
-df = pd.read_csv('/Users/van/Downloads/xls/factors-1.csv')
+df = pd.read_csv('/Users/van/Downloads/xls/factors-2.csv')
 
 # Display basic info
 print("Shape:", df.shape)
