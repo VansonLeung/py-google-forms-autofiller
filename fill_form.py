@@ -1,5 +1,10 @@
 import json
+import os
+from dotenv import load_dotenv
 from playwright.sync_api import sync_playwright
+
+load_dotenv()
+FORM_URL = os.getenv('FORM_URL')
 
 with open('responses.json') as f:
     responses = json.load(f)
@@ -7,7 +12,7 @@ with open('responses.json') as f:
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=False)
     page = browser.new_page()
-    page.goto('https://docs.google.com/forms/d/e/1FAIpQLSfXH-2a11--_4kFuzKKG-I05rhmfY2wCH5T-REJ9hh7l9x6Ug/viewform')
+    page.goto(FORM_URL)
 
     # Start from index 1, since 0 was already submitted
     for i in range(2, len(responses)):

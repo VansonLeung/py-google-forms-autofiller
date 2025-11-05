@@ -25,6 +25,7 @@ A Python script to automatically fill Google Forms with generated responses that
    ```bash
    playwright install chromium
    ```
+5. Copy `.env.example` to `.env` and update the FORM_URL if needed.
 
 ## Usage
 
