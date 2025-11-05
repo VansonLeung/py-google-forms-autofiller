@@ -3,7 +3,7 @@ import numpy as np
 from collections import Counter
 
 # Read the CSV file
-df = pd.read_csv('/Users/van/Downloads/xls/Exploring the factors that influence the cybersecurity behaviors of young adults Group36 (Responses).xlsx - Form Responses 1.csv')
+df = pd.read_csv('/Users/van/Downloads/xls/factors-1.csv')
 
 # Display basic info
 print("Shape:", df.shape)
